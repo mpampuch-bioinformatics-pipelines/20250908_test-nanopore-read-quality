@@ -8,7 +8,8 @@ nextflow_pipeline {
         when {
             params {
                 // define parameters here. Example: 
-                // outdir = "tests/results"
+                input = "${projectDir}/samplesheet.test.csv"
+                outdir = "${projectDir}/tests/results"
             }
         }
 

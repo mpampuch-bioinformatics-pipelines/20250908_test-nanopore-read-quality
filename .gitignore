@@ -303,6 +303,8 @@ nextflow.iml
 # Resources and tools
 resources/*
 test/*
+tests
+tests/*
 tools/*
 tests_other
 other
