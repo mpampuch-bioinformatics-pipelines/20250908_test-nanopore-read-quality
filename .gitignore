@@ -303,8 +303,6 @@ nextflow.iml
 # Resources and tools
 resources/*
 test/*
-tests
-tests/*
 tools/*
 tests_other
 other
@@ -322,6 +320,9 @@ temp
 plugins-prod
 sandbox
 wave-tests
+
+# Test files
+*.test.snap
 
 # =============================================================================
 # STATISTICS AND ANALYSIS FILES
@@ -426,7 +427,6 @@ json/
 yaml/
 toml/
 ini/
-conf/
 config/
 settings/
 parameter/

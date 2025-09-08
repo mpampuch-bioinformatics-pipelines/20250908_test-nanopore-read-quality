@@ -4,7 +4,7 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test") {
+    test("Should run test profile with singularity") {
 
         when {
             params {
@@ -33,3 +33,4 @@ nextflow_pipeline {
         }
     }
 }
+
