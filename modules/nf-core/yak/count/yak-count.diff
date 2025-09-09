@@ -1,0 +1,52 @@
+Changes in component 'nf-core/yak/count'
+Changes in 'yak/count/main.nf':
+--- modules/nf-core/yak/count/main.nf
++++ modules/nf-core/yak/count/main.nf
+@@ -1,18 +1,18 @@
+ process YAK_COUNT {
+-    tag "$meta.id"
++    tag "${meta.id}"
+     label 'process_low'
+ 
+     conda "${moduleDir}/environment.yml"
+-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+-        'https://depot.galaxyproject.org/singularity/yak:0.1--he4a0461_4':
+-        'biocontainers/yak:0.1--he4a0461_4' }"
++    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
++        ? 'https://depot.galaxyproject.org/singularity/yak:0.1--he4a0461_4'
++        : 'biocontainers/yak:0.1--he4a0461_4'}"
+ 
+     input:
+     tuple val(meta), path(fastq)
+ 
+     output:
+     tuple val(meta), path("*.yak"), emit: yak
+-    path "versions.yml"           , emit: versions
++    path "versions.yml", emit: versions
+ 
+     when:
+     task.ext.when == null || task.ext.when
+@@ -20,14 +20,14 @@
+     script:
+     def args = task.ext.args ?: ''
+     def prefix = task.ext.prefix ?: "${meta.id}"
+-    input_command = meta.single_end ? "${fastq}" : "<(zcat ${fastq}) <(zcat ${fastq})"
++    input_command = meta.single_end ? "${fastq}" : "<(zcat ${fastq[0]}) <(zcat ${fastq[1]})"
+     """
+     yak \\
+         count \\
+-        $args \\
++        ${args} \\
+         -t${task.cpus} \\
+         -o ${prefix}.yak \\
+-        $input_command
++        ${input_command}
+ 
+     cat <<-END_VERSIONS > versions.yml
+     "${task.process}":
+
+'modules/nf-core/yak/count/environment.yml' is unchanged
+'modules/nf-core/yak/count/meta.yml' is unchanged
+'modules/nf-core/yak/count/tests/main.nf.test' is unchanged
+'modules/nf-core/yak/count/tests/main.nf.test.snap' is unchanged
+************************************************************

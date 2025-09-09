@@ -1,0 +1,151 @@
+nextflow_process {
+
+    name "Test Process YAK_COUNT"
+    script "../main.nf"
+    process "YAK_COUNT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "yak"
+    tag "yak/count"
+    
+
+    test("Should process rh06 - Illumina - Single End reads") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06', single_end:true ], // meta map
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should process rh06 - Illumina - Paired End reads") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06_pe', single_end:false ], // meta map
+                    [ file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true),
+                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R2_001.fastq.gz", checkIfExists: true)]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should process rh06 - Illumina - Single Ends - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                 """                
+                input[0] = [
+                    [ id:'rh06', single_end:true ], // meta map
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+
+    test("Should create versions.yml with correct content") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06', single_end:true ], // meta map
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions.size() > 0 },
+                { assert path(process.out.versions[0]).text.contains('"YAK_COUNT":') },
+                { assert path(process.out.versions[0]).text.contains("yak:") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create output yak file with correct naming convention") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06_custom_name', single_end:true ], // meta map
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.yak.size() > 0 },
+                { assert path(process.out.yak[0][1]).toString().contains("rh06_custom_name.yak") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create expected output files in stub mode") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06', single_end:true ], // meta map
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.yak.size() > 0 },
+                { assert process.out.versions.size() > 0 },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
