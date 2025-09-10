@@ -1,0 +1,177 @@
+nextflow_process {
+
+    name "Test Process YAK_QV"
+    script "../main.nf"
+    process "YAK_QV"
+
+    tag "modules"
+    tag "modules_local"
+    tag "yak"
+    tag "yak/qv"
+
+
+    test("Should process rh06 - yak qv with child.yak and reads.fastq") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should process rh06 - yak qv with ONT reads") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06_ont' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ont/65_rh06_ont.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should process rh06 - yak qv with PacBio HiFi reads") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06_pb' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/pb/rh06.hifi.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should process rh06 - yak qv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create versions.yml with correct content") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions.size() > 0 },
+                { assert path(process.out.versions[0]).text.contains('"YAK_QV":') },
+                { assert path(process.out.versions[0]).text.contains("yak:") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create output qv.txt file with correct naming convention") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06_custom_name' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.qv.size() > 0 },
+                { assert path(process.out.qv[0][1]).toString().contains("rh06_custom_name.qv.txt") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create expected output files in stub mode") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.qv.size() > 0 },
+                { assert process.out.versions.size() > 0 },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
