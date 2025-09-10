@@ -25,7 +25,7 @@ process YAK_QV {
         qv \\
         ${args} \\
         -t${task.cpus} \\
-        ${child_yak} \\
+        -p ${child_yak} \\
         ${reads} \\
         > ${prefix}.qv.txt
 

@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "yak_inspect"
+description: a tool to compute k-mer QV for reads by comparing two k-mer hash tables
+keywords:
+  - kmer
+  - fastq
+  - quality
+  - qv
+  - sequence
+  - inspect
+
+tools:
+  - "yak":
+      description: "Yet another k-mer analyzer"
+      homepage: "https://github.com/lh3/yak"
+      documentation: "https://github.com/lh3/yak/blob/master/README.md"
+      tool_dev_url: "https://github.com/lh3/yak"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - yak1:
+        type: file
+        description: first k-mer hash table file (.yak)
+        pattern: "*.{yak}"
+        ontologies: []
+    - yak2:
+        type: file
+        description: second k-mer hash table file (.yak)
+        pattern: "*.{yak}"
+        ontologies: []
+
+output:
+  kqv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kqv.txt":
+          type: file
+          description: k-mer quality value estimates comparing the two hash tables
+          pattern: "*.{kqv.txt}"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+
+authors:
+  - "@mpampuch"
+maintainers:
+  - "@mpampuch"

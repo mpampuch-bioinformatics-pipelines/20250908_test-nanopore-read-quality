@@ -20,6 +20,7 @@ process YAK_COUNT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix += "${meta.single_end ? '' : '_ilmn'}"
     input_command = meta.single_end ? "${fastq}" : "<(zcat ${fastq[0]}) <(zcat ${fastq[1]})"
     """
     yak \\
@@ -38,6 +39,7 @@ process YAK_COUNT {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix += "${meta.single_end ? '' : '_ilmn'}"
     """
     touch ${prefix}.yak
 

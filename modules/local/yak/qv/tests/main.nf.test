@@ -17,7 +17,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
                 ]
                 """
@@ -39,7 +39,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06_ont' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ont/65_rh06_ont.fastq.gz", checkIfExists: true)
                 ]
                 """
@@ -61,7 +61,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06_pb' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/pb/rh06.hifi.fastq.gz", checkIfExists: true)
                 ]
                 """
@@ -85,7 +85,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
                 ]
                 """
@@ -107,7 +107,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
                 ]
                 """
@@ -132,7 +132,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06_custom_name' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
                 ]
                 """
@@ -158,7 +158,7 @@ nextflow_process {
                 """                
                 input[0] = [
                     [ id:'rh06' ], // meta map
-                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06.yak", checkIfExists: true),
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
                     file("/ibex/scratch/projects/c2303/ALL-BCL-SEQ-READS/BCLCustomers/lauersk/2025_BCL-benchmarking-study/rh/ilmn/rh06_rh06_UDP0065-UDP0065_L001_R1_001.fastq.gz", checkIfExists: true)
                 ]
                 """

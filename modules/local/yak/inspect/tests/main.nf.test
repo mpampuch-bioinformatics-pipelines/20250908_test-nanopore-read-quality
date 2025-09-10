@@ -1,0 +1,163 @@
+nextflow_process {
+
+    name "Test Process YAK_INSPECT"
+    script "../main.nf"
+    process "YAK_INSPECT"
+
+    tag "modules"
+    tag "modules_local"
+    tag "yak"
+    tag "yak/inspect"
+
+    // Tests for dual yak file mode (kqv output) // EXPECTED TO FAIL SO NO TESTS FOR THIS. Only in stub mode
+
+    test("Should process dual yak files in stub mode") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    [ file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
+                      file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ilmn.yak", checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.kqv.size() > 0 },
+                { assert process.out.versions.size() > 0 },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // Tests for single yak file mode (hist output)
+    test("Should process rh06 with single yak file for histogram generation") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hist.size() > 0 },
+                { assert process.out.kqv.size() == 0 }, // No kqv output for single mode
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create hist file with correct naming convention for single yak mode") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06_single' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hist.size() > 0 },
+                { assert path(process.out.hist[0][1]).toString().contains("rh06_ont.hist") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should process single yak file in stub mode") {
+
+        options "-stub"
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hist.size() > 0 },
+                { assert process.out.versions.size() > 0 },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    // Version testing
+    test("Should create versions.yml with correct content for dual yak mode") {
+
+        options "-stub" // EXPECTED TO FAIL SO NO TESTS FOR THIS. Only in stub mode
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    [ file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true),
+                      file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ilmn.yak", checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions.size() > 0 },
+                { assert path(process.out.versions[0]).text.contains('"YAK_INSPECT":') },
+                { assert path(process.out.versions[0]).text.contains("yak:") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("Should create versions.yml with correct content for single yak mode") {
+
+        when {
+            process {
+                """                
+                input[0] = [
+                    [ id:'rh06' ], // meta map
+                    file("/ibex/scratch/projects/c2303/20250908_test-nanopore-read-quality/TESTS/TEST_DATA/rh06_ont.yak", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions.size() > 0 },
+                { assert path(process.out.versions[0]).text.contains('"YAK_INSPECT":') },
+                { assert path(process.out.versions[0]).text.contains("yak:") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
